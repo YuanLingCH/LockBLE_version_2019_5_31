@@ -3,8 +3,139 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<TextView
-    android:text="home"
+    <include layout="@layout/tobar_layout"/>
+<LinearLayout
+    android:layout_marginLeft="@dimen/space_10"
+    android:layout_marginTop="@dimen/space_10"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/black"
+        android:text="连接状态："
+        android:id="@+id/tv_connect_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:textSize="@dimen/text_16"
+        android:layout_marginLeft="@dimen/space_20"
+        android:textColor="@color/white"
+        android:background="@drawable/buton_sel"
+        android:text="连接"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+    <Button
+        android:textSize="@dimen/text_16"
+        android:layout_marginRight="@dimen/space_20"
+        android:layout_marginLeft="@dimen/space_20"
+        android:textColor="@color/white"
+        android:background="@drawable/buton_sel"
+        android:text="断开"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+<TextView
+    android:id="@+id/tv_time"
+    android:textSize="@dimen/text_16"
+    android:textColor="@color/black"
+    android:text="时间信息：2019年5月29日14:30"
+    android:layout_marginTop="@dimen/space_20"
+    android:layout_marginLeft="@dimen/space_10"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_electric_message"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/black"
+        android:text="电量信息：30%"
+        android:layout_marginTop="@dimen/space_20"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_door_message"
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/black"
+        android:text="门锁信息：101号"
+        android:layout_marginTop="@dimen/space_20"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:text="出入信息："
+        android:textSize="@dimen/text_16"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/space_20"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+
+        android:layout_marginTop="@dimen/space_5"
+        android:layout_marginLeft="@dimen/space_10"
+        android:id="@+id/ll_start_time"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/black"
+            android:text="选择开始时间："
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginLeft="@dimen/space_20"
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/black"
+            android:id="@+id/tv_start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="@dimen/space_5"
+        android:layout_marginLeft="@dimen/space_10"
+        android:id="@+id/ll_end_time"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/black"
+            android:text="选择结束时间："
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="@dimen/text_16"
+            android:textColor="@color/black"
+             android:layout_marginLeft="@dimen/space_20"
+            android:id="@+id/tv_end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <Button
+        android:textSize="@dimen/text_16"
+        android:layout_marginRight="@dimen/space_20"
+        android:layout_marginLeft="@dimen/space_20"
+        android:layout_marginTop="@dimen/space_10"
+        android:background="@drawable/buton_sel"
+        android:textColor="@color/white"
+        android:text="查询出入信息"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

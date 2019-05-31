@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <Button
+        android:layout_marginTop="@dimen/space_20"
         android:id="@+id/but_modify_admin_password"
         android:textSize="@dimen/text_size_14"
         android:textColor="@color/white"

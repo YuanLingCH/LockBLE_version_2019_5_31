@@ -57,9 +57,11 @@ public class WelcomeActivity extends BaseActivity {
         but_admin_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(WelcomeActivity.this,LoginActivity.class);
+             /*   Intent intent =new Intent(WelcomeActivity.this,LoginActivity.class);
                 intent.putExtra("login", UserCoinfig.ADMIN_LOGIN);
-                startActivity(intent);
+                startActivity(intent);*/
+
+                startActivity(new Intent(WelcomeActivity.this,MainActivity.class));
             }
         });
         /**
@@ -68,7 +70,7 @@ public class WelcomeActivity extends BaseActivity {
         but_modify_admin_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProgresssDialogUtils.showProgressDialog("请稍后", "正在连接设备...",WelcomeActivity .this);
+              ProgresssDialogUtils.showProgressDialog("请稍后", "正在连接设备...",WelcomeActivity .this);
                 final byte[]bytes={(byte) 0xAA, (byte) 0xBB,0x08 , (byte) 0x82,0x06 ,0x06, 0x06 ,0x06 ,0x06 ,0x06};
                 mBleController.writeBuffer(bytes, new OnWriteCallback() {
                     @Override
@@ -82,6 +84,7 @@ public class WelcomeActivity extends BaseActivity {
                         ProgresssDialogUtils.hideProgressDialog();
                     }
                 });
+
             }
         });
     }

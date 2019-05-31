@@ -4,4 +4,14 @@
     <string name="text_admin_login">管理员登录</string>
     <string name="text_scan_ble">点击按钮设备扫描</string>
     <string name="text_modify_admin_password">修改蓝牙管理员密码</string>
+    <string name="text_lock_message">蓝牙锁基本信息</string>
+
+    <string name="cancle">取消</string>
+    <string name="title">请选择时间</string>
+    <string name="commit">确定</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
 </resources>
