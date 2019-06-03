@@ -24,8 +24,6 @@ import com.hansion.h_ble.callback.ScanCallback;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import wansun.com.lockble.R;
 import wansun.com.lockble.adapter.DeviceListAdapter;
@@ -150,26 +148,23 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
                 Toast.makeText(ScanBleActivity.this, "连接成功", Toast.LENGTH_SHORT).show();
               //  startActivity(new Intent(ScanBleActivity.this,SendAndReciveActivity.class))
                 //连接成功后，就要立即进行密码校验
-                final byte[]bytes={(byte) 0xAA, (byte) 0xBB,0x08 ,0x11,0x00 ,0x01, 0x02 ,0x03 ,0x04 ,0x05};
-                Timer timer=new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
+                final byte[]bytes={0x00 ,0x00, 0x00 ,0x00 ,0x00 ,0x00};
+
                         mBleController.writeBuffer(bytes, new OnWriteCallback() {
                             @Override
                             public void onSuccess() {
                                 Toast.makeText(ScanBleActivity.this, "密码校验数据写入完成"+bytes.toString(), Toast.LENGTH_SHORT).show();
-                                tv_scan_ble.setText("写入蓝牙模块数据为："+mBleController.bytesToHexString(bytes));
+                                tv_scan_ble.setText("写入蓝牙模块数据成功为："+mBleController.bytesToHexString(bytes));
+                              
                             }
 
                             @Override
                             public void onFailed(int state) {
                                 Toast.makeText(ScanBleActivity.this, "密码校验数据写入失败", Toast.LENGTH_SHORT).show();
-                                tv_scan_ble.setText("写入蓝牙模块数据为："+mBleController.bytesToHexString(bytes));
+                                tv_scan_ble.setText("写入蓝牙模块数据失败为："+mBleController.bytesToHexString(bytes));
                             }
                         });
-                    }
-                },200);
+
 
             }
 

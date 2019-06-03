@@ -2,6 +2,7 @@ package wansun.com.lockble.ui.fragment;
 
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,6 +22,7 @@ public class HomeFragment extends BaseFragment {
     TextView tv_visit_tobar,tv_start_time,tv_end_time;
     LinearLayout ll_start_time,ll_end_time;
     ListView lv;
+    Button but_qury_message;
 
     AccessToInformationAdapter adapter;
     @Override
@@ -38,6 +40,8 @@ public class HomeFragment extends BaseFragment {
         ll_end_time= (LinearLayout) root.findViewById(R.id.ll_end_time);
         tv_start_time= (TextView) root.findViewById(R.id.tv_start_time);
         tv_end_time= (TextView) root.findViewById(R.id.tv_end_time);
+        lv= (ListView) root.findViewById(R.id.lv);
+        but_qury_message= (Button) root.findViewById(R.id.but_qury_message);
     }
 
     @Override
@@ -61,7 +65,15 @@ public class HomeFragment extends BaseFragment {
                 DatePicier.getCustomDatePicker1().show(tv_end_time.getText().toString());
             }
         });
+        /**
+         * 出入信息查询
+         */
+        but_qury_message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
     }
 
     @Override

@@ -125,6 +125,7 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
     <Button
+        android:id="@+id/but_qury_message"
         android:textSize="@dimen/text_16"
         android:layout_marginRight="@dimen/space_20"
         android:layout_marginLeft="@dimen/space_20"
