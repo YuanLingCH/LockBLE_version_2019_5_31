@@ -148,14 +148,14 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
                 Toast.makeText(ScanBleActivity.this, "连接成功", Toast.LENGTH_SHORT).show();
               //  startActivity(new Intent(ScanBleActivity.this,SendAndReciveActivity.class))
                 //连接成功后，就要立即进行密码校验
-                final byte[]bytes={0x00 ,0x00, 0x00 ,0x00 ,0x00 ,0x00};
+                final byte[]bytes={(byte) 0xaa,(byte) 0xbb,0x08,0x11,0x00 ,0x01, 0x02 ,0x03 ,0x04 ,0x05};
 
                         mBleController.writeBuffer(bytes, new OnWriteCallback() {
                             @Override
                             public void onSuccess() {
                                 Toast.makeText(ScanBleActivity.this, "密码校验数据写入完成"+bytes.toString(), Toast.LENGTH_SHORT).show();
                                 tv_scan_ble.setText("写入蓝牙模块数据成功为："+mBleController.bytesToHexString(bytes));
-                              
+                                startActivity(new Intent(ScanBleActivity.this,WelcomeActivity.class));
                             }
 
                             @Override

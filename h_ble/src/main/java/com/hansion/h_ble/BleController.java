@@ -79,11 +79,9 @@ AppCompatActivity mActivity;
     private static final String BLUETOOTH_NOTIFY_D = "00002902-0000-1000-8000-00805f9b34fb";
 
     //TODO 这里是硬件提供的各种UUID 一定要根据自己的情况进行修改
-    private static final String BLUETOOTH_S = "000cdd0-0000-1000-8000-00805f9b0131";
-    private static final String BLUETOOTH_NOTIFY_C = "0003cdd1-0000-1000-8000-00805f9b0131";
-    private static final String BLUETOOTH_WRITE_C = "0003cbb1-0000-1000-8000-00805f9b0131";
-
-
+    private static final String BLUETOOTH_S = "0003cdd0-0000-1000-8000-00805f9b0131";
+  private static final String BLUETOOTH_NOTIFY_C = "0003cdd1-0000-1000-8000-00805f9b0131";   //特征值
+   private static final String BLUETOOTH_WRITE_C = "0003cdd2-0000-1000-8000-00805f9b0131";   //特征值
 
 
 
