@@ -13,6 +13,9 @@ import wansun.com.lockble.R;
 import wansun.com.lockble.entity.AccessToInformationBean;
 
 /**
+ *
+ *
+ * 出入信息的adapter
  * Created by User on 2019/5/31.
  */
 

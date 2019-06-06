@@ -92,8 +92,12 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
                 @Override
                 public void onRecive(byte[] value) {
                     //接受数据
-                    tv_scan_ble.setText("蓝牙模块返回数据："+  mBleController.bytesToHexString(value));
-                    startActivity(new Intent(ScanBleActivity.this,WelcomeActivity.class));
+                    String s = mBleController.bytesToHexString(value).trim();
+                    tv_scan_ble.setText("蓝牙模块返回数据："+s );
+                    if ("CC".equals(s)){
+                        startActivity(new Intent(ScanBleActivity.this,WelcomeActivity.class));
+                    }
+
                 }
             });
     }
@@ -162,6 +166,7 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
                             public void onFailed(int state) {
                                 Toast.makeText(ScanBleActivity.this, "密码校验数据写入失败", Toast.LENGTH_SHORT).show();
                                 tv_scan_ble.setText("写入蓝牙模块数据失败为："+mBleController.bytesToHexString(bytes));
+
                             }
                         });
 
@@ -172,7 +177,7 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
             public void onConnFailed() {
                 hideProgressDialog();
                 Toast.makeText(ScanBleActivity.this, "连接超时，请重试", Toast.LENGTH_SHORT).show();
-              /*  startActivity(new Intent(ScanBleActivity.this,WelcomeActivity.class));*/
+        //   startActivity(new Intent(ScanBleActivity.this,WelcomeActivity.class));
             }
         });
     }

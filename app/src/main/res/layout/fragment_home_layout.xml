@@ -41,7 +41,7 @@
     android:id="@+id/tv_time"
     android:textSize="@dimen/text_16"
     android:textColor="@color/black"
-    android:text="时间信息：2019年5月29日14:30"
+    android:text="时间信息：2019年6月6日16:30"
     android:layout_marginTop="@dimen/space_20"
     android:layout_marginLeft="@dimen/space_10"
     android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="@dimen/space_5"
+        android:layout_marginTop="@dimen/space_15"
         android:layout_marginLeft="@dimen/space_10"
         android:id="@+id/ll_end_time"
         android:orientation="horizontal"
@@ -113,10 +113,10 @@
             android:textSize="@dimen/text_16"
             android:textColor="@color/black"
             android:text="选择结束时间："
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+
             android:textSize="@dimen/text_16"
             android:textColor="@color/black"
              android:layout_marginLeft="@dimen/space_20"
@@ -124,6 +124,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="@dimen/space_15"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <Button
         android:id="@+id/but_qury_message"
         android:textSize="@dimen/text_16"
@@ -133,9 +138,74 @@
         android:background="@drawable/buton_sel"
         android:textColor="@color/white"
         android:text="查询出入信息"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/but_open_lock"
+            android:textSize="@dimen/text_16"
+            android:layout_marginRight="@dimen/space_20"
+            android:layout_marginLeft="@dimen/space_20"
+            android:layout_marginTop="@dimen/space_10"
+            android:background="@drawable/buton_sel"
+            android:textColor="@color/white"
+            android:text="开锁"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_ble_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_marginRight="@dimen/space_20"
+        android:layout_marginLeft="@dimen/space_15"
+        android:layout_marginTop="@dimen/space_10"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/tv_number"
+            android:text="次数"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/space_5"
+            android:id="@+id/tv_open_lock_time"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="时间"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/space_5"
+            android:id="@+id/tv_job_number"
+            android:layout_width="wrap_content"
+            android:text="工号"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/space_5"
+            android:id="@+id/tv_open_lock_typer"
+            android:layout_width="wrap_content"
+            android:text="开锁类型"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/tv_open_card_type"
+            android:layout_width="wrap_content"
+            android:text="卡类型"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     <ListView
+        android:layout_marginTop="@dimen/space_5"
+        android:layout_marginRight="@dimen/space_20"
+        android:layout_marginLeft="@dimen/space_15"
         android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

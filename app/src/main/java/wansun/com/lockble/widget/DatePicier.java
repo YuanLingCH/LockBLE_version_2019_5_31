@@ -4,9 +4,14 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import wansun.com.lockble.constant.UserCoinfig;
+import wansun.com.lockble.event.EventMessage;
 
 /**
  * Created by yuanling on 2018/4/25.
@@ -32,10 +37,6 @@ public class DatePicier {
       // currentDate.setText(now.split(" ")[0]);
         currentDate.setText(now);
         currentTime.setText(now);
-
-
-
-
         String kaiTime=null;
         String jieshuTime=null;
         kaiTime=now;
@@ -67,10 +68,10 @@ public class DatePicier {
             @Override
             public void handle(String time) { // 回调接口，获得选中的时间
                 currentTime.setText(time);
-      /*          createtimeMessage message=new createtimeMessage();
-                message.setTime(time);
-                EventBus.getDefault().post(message);
-*/
+                Log.d("TAG","开始时间"+time);
+
+                EventBus.getDefault().post(new EventMessage(time, UserCoinfig.START_TIME));
+
 
             }
         },  kaiTime,jieshuTime); // 初始化日期格式请用：yyyy-MM-dd HH:mm，否则不能正常运行
@@ -84,9 +85,9 @@ public class DatePicier {
             public void handle(String time) { // 回调接口，获得选中的时间
 
                 currentDate.setText(time);
-                Log.d("TAG","时间"+time);
+                Log.d("TAG","结束时间"+time);
 
-
+                EventBus.getDefault().post(new EventMessage(time, UserCoinfig.END_TIME));
           /*      losetimeMessage message=new losetimeMessage();
                 message.setTime(time);
                 EventBus.getDefault().post(message);
