@@ -98,6 +98,9 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
                         startActivity(new Intent(ScanBleActivity.this,WelcomeActivity.class));
                     }else {
                         Toast.makeText(ScanBleActivity.this, "蓝牙连接失败，请重新连接", Toast.LENGTH_SHORT).show();
+
+
+
                     }
 
                 }
