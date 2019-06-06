@@ -96,6 +96,8 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
                     tv_scan_ble.setText("蓝牙模块返回数据："+s );
                     if ("CC".equals(s)){
                         startActivity(new Intent(ScanBleActivity.this,WelcomeActivity.class));
+                    }else {
+                        Toast.makeText(ScanBleActivity.this, "蓝牙连接失败，请重新连接", Toast.LENGTH_SHORT).show();
                     }
 
                 }
