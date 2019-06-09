@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">LockBLE</string>
-    <string name="text_login">用户登录</string>
+    <string name="text_login_four">四级权限</string>
+    <string name="text_login_two">二级权限</string>
+    <string name="text_login_three">三级权限</string>
     <string name="text_admin_login">管理员登录</string>
     <string name="text_scan_ble">点击按钮设备扫描</string>
     <string name="text_modify_admin_password">修改蓝牙管理员密码</string>

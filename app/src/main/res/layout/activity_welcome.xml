@@ -28,15 +28,36 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content">
            <Button
-               android:id="@+id/but_login"
+               android:id="@+id/but_login_two"
                android:textSize="@dimen/text_size_14"
                android:textColor="@color/white"
                android:layout_marginLeft="@dimen/space_20"
                android:background="@drawable/buton_sel"
-               android:text="@string/text_login"
+               android:text="@string/text_login_two"
                android:layout_weight="1"
                android:layout_width="0dp"
                android:layout_height="wrap_content" />
+           <Button
+               android:id="@+id/but_login_three"
+               android:textSize="@dimen/text_size_14"
+               android:textColor="@color/white"
+               android:layout_marginLeft="@dimen/space_20"
+               android:background="@drawable/buton_sel"
+               android:text="@string/text_login_three"
+               android:layout_weight="1"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content" />
+           <Button
+               android:id="@+id/but_login_four"
+               android:textSize="@dimen/text_size_14"
+               android:textColor="@color/white"
+               android:layout_marginLeft="@dimen/space_20"
+               android:background="@drawable/buton_sel"
+               android:text="@string/text_login_four"
+               android:layout_weight="1"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content" />
+
            <Button
                android:id="@+id/but_admin_login"
                android:textSize="@dimen/text_size_14"

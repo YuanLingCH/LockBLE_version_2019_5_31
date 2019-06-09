@@ -1,6 +1,5 @@
 package wansun.com.lockble.adapter;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,31 +10,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wansun.com.lockble.R;
+import wansun.com.lockble.entity.BlackListBean;
 
 
 public class BlackListAdapter extends BaseAdapter {
 
-    private List<BluetoothDevice> bluetoothDevices = new ArrayList<BluetoothDevice>();
+    private List<BlackListBean> blackListData = new ArrayList<BlackListBean>();
     private Context mContext;
 
-    public BlackListAdapter(Context context, List<BluetoothDevice> bluetoothDevices) {
+    public BlackListAdapter(Context context, List<BlackListBean> bluetoothDevices) {
         mContext = context;
-        this.bluetoothDevices = bluetoothDevices;
+        this.blackListData = bluetoothDevices;
     }
 
     @Override
     public int getCount() {
-        return bluetoothDevices.size();
+        return blackListData.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public Object getItem(int position) {
+        return blackListData.get(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return 0;
+    public long getItemId(int position) {
+        return position ;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class BlackListAdapter extends BaseAdapter {
                 getViewHolder(mContext, convertView, viewGroup, R.layout.black_list_item, position);
         TextView name = holder.getView(R.id.tv_black_list);
 
-        name.setText(bluetoothDevices.get(position).getName());
+        name.setText(blackListData.get(position).icNumbler);
 
         return holder.getConvertView();
     }
