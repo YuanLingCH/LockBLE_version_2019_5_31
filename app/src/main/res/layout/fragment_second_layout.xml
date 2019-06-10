@@ -3,8 +3,22 @@
     android:orientation="vertical"
 android:layout_width="match_parent"
 android:layout_height="match_parent">
-
 <include layout="@layout/tobar_layout"/>
+    <Button
+        android:id="@+id/but_time_check"
+        android:layout_margin="@dimen/space_10"
+        android:background="@drawable/buton_sel"
+        android:text="时间校验"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:textColor="@color/red"
+        android:id="@+id/tv_write_data"
+        android:layout_marginTop="@dimen/space_10"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 <LinearLayout
     android:layout_marginTop="@dimen/space_10"
     android:orientation="horizontal"

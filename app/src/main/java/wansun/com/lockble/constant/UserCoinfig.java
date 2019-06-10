@@ -6,6 +6,7 @@ package wansun.com.lockble.constant;
 
 public class UserCoinfig {
     public static final  String LOGIN="login";   //普通用户
+    public static final  String LOGIN_TYPE="login_type";
     public static final  String ADMIN_LOGIN="admin_login";   //蓝牙管理员说
     public static final String START_TIME="satrt_time";
     public static final String END_TIME="end_time";

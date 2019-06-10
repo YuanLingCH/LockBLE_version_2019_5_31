@@ -3,8 +3,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+   <include layout="@layout/tobar_layout"/>
     <Button
+        android:layout_below="@+id/rl_tobar"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/space_20"
         android:id="@+id/but_modify_admin_password"
         android:textSize="@dimen/text_size_14"
@@ -15,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 <TextView
+
     android:layout_marginTop="@dimen/space_10"
     android:layout_marginLeft="@dimen/space_10"
     android:layout_below="@+id/but_modify_admin_password"
@@ -28,6 +31,7 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content">
            <Button
+
                android:id="@+id/but_login_two"
                android:textSize="@dimen/text_size_14"
                android:textColor="@color/white"
@@ -38,6 +42,7 @@
                android:layout_width="0dp"
                android:layout_height="wrap_content" />
            <Button
+               android:visibility="gone"
                android:id="@+id/but_login_three"
                android:textSize="@dimen/text_size_14"
                android:textColor="@color/white"
@@ -48,6 +53,7 @@
                android:layout_width="0dp"
                android:layout_height="wrap_content" />
            <Button
+               android:visibility="gone"
                android:id="@+id/but_login_four"
                android:textSize="@dimen/text_size_14"
                android:textColor="@color/white"

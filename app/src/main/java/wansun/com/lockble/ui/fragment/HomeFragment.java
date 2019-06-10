@@ -84,7 +84,7 @@ public class HomeFragment extends BaseFragment {
                 case UserCoinfig.TIME_SUCCESS:
                     Bundle data1 = msg.getData();
                     String value_time= data1.getString("value_time");
-                    tv_time.setText("时间信息："+value_time);
+                    tv_time.setText("时间信息："+"2019年"+value_time);
                     break;
                 case UserCoinfig.DATA_FROM_BLE:  // value_data_from_ble
                     tv_ble_data.setVisibility(View.VISIBLE);
@@ -313,6 +313,9 @@ public class HomeFragment extends BaseFragment {
 
                 if (isflag_electmessage){
                     isflag_electmessage=false;
+                    byte [] electByte=new byte[2];
+                    electByte[0]=value[2];
+                    electByte[1]=value[3];
                     Message message=new Message();
                     Bundle bundle = new Bundle();
                     bundle.putString("value_electmessage", mBleController.bytesToHexString(value));// 将服务器返回的订单号传到Bundle中，，再通过handler传出
@@ -325,7 +328,15 @@ public class HomeFragment extends BaseFragment {
                     isflag_time=false;
                     Message message=new Message();
                     Bundle bundle = new Bundle();
-                    bundle.putString("value_time", mBleController.bytesToHexString(value));// 将服务器返回的订单号传到Bundle中，，再通过handler传出
+                    byte []data=new byte[6];
+                    data[0]=value[3];
+                    data[1]=value[4];
+                    data[2]=value[5];
+                    data[3]=value[6];
+                    data[4]=value[7];
+                    data[5]=value[8];
+                    String data_="2019年"+data[0]+"周"+data[1]+"-"+data[2]+"-"+data[3]+":"+data[4]+":"+data[5];
+                    bundle.putString("value_time", data_);// 将服务器返回的订单号传到Bundle中，，再通过handler传出
                     message.what=UserCoinfig.TIME_SUCCESS;
                     message.setData(bundle);
                     mhandler.sendMessage(message);
