@@ -18,4 +18,7 @@ public class UserCoinfig {
     public static final int ELECTRIC_MESSAGE=0x06;
     public static final int TIME_SUCCESS=0x07;
     public static final int DATA_FROM_BLE=0x08;
+    public static final int TIME_CHECK_OUT=0x09;  //锁的时间校验
+    public static final int WRITE_SUCCESS=0x10;
+    public static final int WRITE_FAIL=0x11;
 }

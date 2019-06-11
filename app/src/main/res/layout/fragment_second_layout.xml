@@ -19,6 +19,15 @@ android:layout_height="match_parent">
         android:layout_marginLeft="@dimen/space_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/ed_count"
+        android:layout_marginRight="@dimen/space_10"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_marginTop="@dimen/space_10"
+        android:background="@drawable/login_shape"
+        android:hint="请输入账号"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
 <LinearLayout
     android:layout_marginTop="@dimen/space_10"
     android:orientation="horizontal"

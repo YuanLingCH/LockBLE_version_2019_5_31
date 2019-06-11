@@ -2,11 +2,15 @@ package wansun.com.lockble.ui.fragment;
 
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,9 +27,11 @@ import java.util.List;
 import wansun.com.lockble.R;
 import wansun.com.lockble.adapter.BlackListAdapter;
 import wansun.com.lockble.base.BaseFragment;
+import wansun.com.lockble.constant.UserCoinfig;
 import wansun.com.lockble.entity.BlackListBean;
 import wansun.com.lockble.global.LocklBleApplication;
 import wansun.com.lockble.utils.CommonUtil;
+import wansun.com.lockble.utils.ToastUtil;
 
 /**
  * Created by User on 2019/5/15.
@@ -38,8 +44,41 @@ public class SecondFragment extends BaseFragment {
     BlackListAdapter adapter;
     List<BlackListBean> data;
     ListView lv_black;
+    EditText ed_count;
     private BleController mBleController;
     public static final String REQUESTKEY_SENDANDRECIVEACTIVITY = "SecondFragment";
+    Handler mHandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+
+                case UserCoinfig.TIME_CHECK_OUT:
+                    Bundle data = msg.getData();
+                    if (data!=null){
+                        String timeCheckOut = data.getString("timeCheckOut");
+                        tv_write_data.setText("蓝牙返回数据："+timeCheckOut);
+                    }
+                    break;
+                case UserCoinfig.WRITE_SUCCESS:
+                    Bundle data1 = msg.getData();
+                    if (data1!=null){
+                        String writeSuccess = data1.getString("writeSuccess");
+                        tv_write_data.setText("写入蓝牙数据成功："+writeSuccess);
+                    }
+
+                    break;
+                case UserCoinfig.WRITE_FAIL:
+                    Bundle data2 = msg.getData();
+                    if (data2!=null){
+                        String writeFail = data2.getString("writeFail");
+                        tv_write_data.setText("写入蓝牙数据失败："+writeFail);
+                    }
+                    break;
+            }
+        }
+    };
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_second_layout;
@@ -56,6 +95,7 @@ public class SecondFragment extends BaseFragment {
         lv_black= (ListView) root.findViewById(R.id.lv_black);
         but_time_check= (Button) root.findViewById(R.id.but_time_check);
         tv_write_data= (TextView) root.findViewById(R.id.tv_write_data);
+        ed_count= (EditText) root.findViewById(R.id.ed_count);
 
     }
     @Override
@@ -67,6 +107,7 @@ public class SecondFragment extends BaseFragment {
     }
     @Override
     public void initEvent() {
+        onReceiverData();
         data= new ArrayList();
         BlackListBean bean=null;
         for (int i = 0; i < 5; i++) {
@@ -82,7 +123,44 @@ public class SecondFragment extends BaseFragment {
         add_black_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lv_black.setAdapter(adapter);
+               // lv_black.setAdapter(adapter);
+                String count= ed_count.getText().toString().trim();
+
+                if (!TextUtils.isEmpty(count)){
+                    byte [] head={(byte) 0XAA, (byte) 0XBB,0X0C, (byte) 0XB1};
+                    String replace = count.replace("", "0");
+                    String pas=null;
+                    pas =  replace.substring(0,  replace.length() - 1);  //16进制的字符串
+                    final byte[] bytes = CommonUtil.toByteArray(pas);
+                    Log.d("TAG","进制"+ pas);
+                    final byte[] senData= CommonUtil.unitByteArray(head, bytes);
+                    mBleController.writeBuffer(senData, new OnWriteCallback() {
+                        @Override
+                        public void onSuccess() {
+                            Message msg=new Message();
+                            Bundle bundle=new Bundle();
+                            bundle.putString("writeSuccess",mBleController.bytesToHexString( senData));
+                            msg.setData(bundle);
+                            msg.what= UserCoinfig.WRITE_SUCCESS;
+                            mHandler.sendMessage(msg);
+
+                        }
+
+                        @Override
+                        public void onFailed(int state) {
+                            Message msg=new Message();
+                            Bundle bundle=new Bundle();
+                            bundle.putString("writeFail",mBleController.bytesToHexString( senData));
+                            msg.setData(bundle);
+                            msg.what= UserCoinfig.WRITE_FAIL;
+                            mHandler.sendMessage(msg);
+                        }
+                    });
+
+
+                }else {
+                    ToastUtil.showToast(getActivity(),"请输入账号");
+                }
             }
         });
         /**
@@ -91,8 +169,44 @@ public class SecondFragment extends BaseFragment {
         delect_black_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String count= ed_count.getText().toString().trim();
 
+                if (!TextUtils.isEmpty(count)){
+                    byte [] head={(byte) 0XAA, (byte) 0XBB,0X0C, (byte) 0XB0};
+                    String replace = count.replace("", "0");
+                    String pas=null;
+                    pas =  replace.substring(0,  replace.length() - 1);  //16进制的字符串
+                    final byte[] bytes = CommonUtil.toByteArray(pas);
+                    Log.d("TAG","进制"+ pas);
+                    final byte[] senData= CommonUtil.unitByteArray(head, bytes);
+                    mBleController.writeBuffer(senData, new OnWriteCallback() {
+                        @Override
+                        public void onSuccess() {
+                            Message msg=new Message();
+                            Bundle bundle=new Bundle();
+                            bundle.putString("writeSuccess",mBleController.bytesToHexString( senData));
+                            msg.setData(bundle);
+                            msg.what= UserCoinfig.WRITE_SUCCESS;
+                            mHandler.sendMessage(msg);
+                        }
+
+                        @Override
+                        public void onFailed(int state) {
+                            Message msg=new Message();
+                            Bundle bundle=new Bundle();
+                            bundle.putString("writeFail",mBleController.bytesToHexString( senData));
+                            msg.setData(bundle);
+                            msg.what= UserCoinfig.WRITE_FAIL;
+                            mHandler.sendMessage(msg);
+                        }
+                    });
+
+
+                }else {
+                    ToastUtil.showToast(getActivity(),"请输入账号");
+                }
             }
+
         });
         /**
          * listView Item 的点击事件
@@ -115,7 +229,6 @@ public class SecondFragment extends BaseFragment {
             // 获取手机的当前时间
                 Date date=new Date();
                 String weekOfDate = CommonUtil.getWeekOfDate(date);
-
                 SimpleDateFormat sdf = new SimpleDateFormat("MMddHHmmss");
                 String format = sdf.format(date);
                 Log.d("TAG","时间"+format);
@@ -129,12 +242,24 @@ public class SecondFragment extends BaseFragment {
                 mBleController.writeBuffer(bytes, new OnWriteCallback() {
                     @Override
                     public void onSuccess() {
-                        tv_write_data.setText("写入蓝牙数据成功："+mBleController.bytesToHexString( bytes));
+
+                        Message msg=new Message();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("writeSuccess",mBleController.bytesToHexString( bytes));
+                        msg.setData(bundle);
+                        msg.what= UserCoinfig.WRITE_SUCCESS;
+                        mHandler.sendMessage(msg);
+
                     }
 
                     @Override
                     public void onFailed(int state) {
-                        tv_write_data.setText("写入蓝牙数据失败："+mBleController.bytesToHexString( bytes));
+                        Message msg=new Message();
+                        Bundle bundle=new Bundle();
+                        bundle.putString("writeFail",mBleController.bytesToHexString( bytes));
+                        msg.setData(bundle);
+                        msg.what= UserCoinfig.WRITE_FAIL;
+                        mHandler.sendMessage(msg);
                     }
                 });
             }
@@ -143,11 +268,22 @@ public class SecondFragment extends BaseFragment {
 
     @Override
     public void initData() {
+
+    }
+
+    /**
+     * 接受蓝牙数据
+     */
+    private void onReceiverData() {
         mBleController.registReciveListener(REQUESTKEY_SENDANDRECIVEACTIVITY, new OnReceiverCallback() {
             @Override
             public void onRecive(byte[] value) {
-                Log.d("TAG",""+mBleController.bytesToHexString(value));
-                tv_write_data.setText("蓝牙返回数据："+mBleController.bytesToHexString(value));
+            Message msg=new Message();
+                Bundle bundle=new Bundle();
+                bundle.putString("timeCheckOut",mBleController.bytesToHexString(value));
+                msg.setData(bundle);
+                msg.what= UserCoinfig.TIME_CHECK_OUT;
+                mHandler.sendMessage(msg);
             }
         });
     }

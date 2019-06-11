@@ -22,6 +22,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -84,7 +86,7 @@ public class HomeFragment extends BaseFragment {
                 case UserCoinfig.TIME_SUCCESS:
                     Bundle data1 = msg.getData();
                     String value_time= data1.getString("value_time");
-                    tv_time.setText("时间信息："+"2019年"+value_time);
+                    tv_time.setText("时间信息："+value_time);
                     break;
                 case UserCoinfig.DATA_FROM_BLE:  // value_data_from_ble
                     tv_ble_data.setVisibility(View.VISIBLE);
@@ -309,41 +311,37 @@ public class HomeFragment extends BaseFragment {
                 if (isFlag_open_lock){
                     isFlag_open_lock=false;
                     mhandler.sendEmptyMessage(UserCoinfig.open_lock_over_or_fail);
-                }
-
-                if (isflag_electmessage){
+                }else if (isflag_electmessage){
                     isflag_electmessage=false;
-                    byte [] electByte=new byte[2];
-                    electByte[0]=value[2];
-                    electByte[1]=value[3];
+                    String trim = mBleController.bytesToHexString(value).trim();
+                    String[] split = trim.split(" ");
+                    StringBuffer buffer=new StringBuffer();
+                    buffer.append( split[2]);
+                    buffer.append( split[3]);
+                    String str = new BigInteger(buffer.toString(), 16).toString(10);
+                    double v1 = (Double.parseDouble(str) / 1000)*2/6.4*100;
+                    DecimalFormat df = new DecimalFormat("#.00");
+                    String numbler = df.format(v1);
+
                     Message message=new Message();
                     Bundle bundle = new Bundle();
-                    bundle.putString("value_electmessage", mBleController.bytesToHexString(value));// 将服务器返回的订单号传到Bundle中，，再通过handler传出
+                    bundle.putString("value_electmessage", numbler+"%");// 将服务器返回的订单号传到Bundle中，，再通过handler传出
                     message.what=UserCoinfig.ELECTRIC_MESSAGE;
                     message.setData(bundle);
                     mhandler.sendMessage(message);
 
-                }
-                if (isflag_time){
+                }else if (isflag_time){
                     isflag_time=false;
                     Message message=new Message();
                     Bundle bundle = new Bundle();
-                    byte []data=new byte[6];
-                    data[0]=value[3];
-                    data[1]=value[4];
-                    data[2]=value[5];
-                    data[3]=value[6];
-                    data[4]=value[7];
-                    data[5]=value[8];
-                    String data_="2019年"+data[0]+"周"+data[1]+"-"+data[2]+"-"+data[3]+":"+data[4]+":"+data[5];
+                    String trim = mBleController.bytesToHexString(value).trim();
+                    String[] split = trim.split(" ");
+                    String data_="2019年"+split[3]+"周"+split[4]+"-"+split[5]+"-"+split[6]+":"+split[7]+":"+split[8];
                     bundle.putString("value_time", data_);// 将服务器返回的订单号传到Bundle中，，再通过handler传出
                     message.what=UserCoinfig.TIME_SUCCESS;
                     message.setData(bundle);
                     mhandler.sendMessage(message);
-
-
-                }
-                if (isFlag_qury_message){  //查询出入信息
+                }else if (isFlag_qury_message){  //查询出入信息
                     isFlag_qury_message=false;
                 }
 

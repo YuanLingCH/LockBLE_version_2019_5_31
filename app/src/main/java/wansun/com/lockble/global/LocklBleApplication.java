@@ -20,15 +20,21 @@ public class LocklBleApplication extends Application {
     private SQLiteDatabase db;
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
+     static LocklBleApplication app;
     @Override
     public void onCreate() {
         super.onCreate();
         mContext=getApplicationContext();
         initDatabass();
+        app=this;
+        CrashReport.initCrashReport(getApplicationContext(), "2e4d3d1ad3", true);
     }
     public static Context getInstanceContext(){
 
         return mContext;
+    }
+    public static LocklBleApplication getInstance(){
+        return  app;
     }
     private void initDatabass() {
         //这里之后会修改，关于升级数据库
@@ -36,7 +42,7 @@ public class LocklBleApplication extends Application {
         db = dbHelper.getWritableDatabase();
         mDaoMaster = new DaoMaster(db);
         mDaoSession = mDaoMaster.newSession();    // 2e4d3d1ad3
-        CrashReport.initCrashReport(getApplicationContext(), "2e4d3d1ad3", true);
+
 
 
     }
