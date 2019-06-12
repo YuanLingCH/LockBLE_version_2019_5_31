@@ -4,8 +4,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import java.math.BigInteger;
-import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.List;
 
 import wansun.com.lockble.R;
@@ -76,18 +75,16 @@ public class GreenDaoActivity extends BaseActivity {
         but_delect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String trim = "AA BB 0A 47 CC";
-                String[] split = trim.split(" ");
-                StringBuffer buffer=new StringBuffer();
-                buffer.append( split[2]);
-                buffer.append( split[3]);
-                String str = new BigInteger(buffer.toString(), 16).toString(10);
-                double v1 = (Double.parseDouble(str) / 1000)*2/6.4*100;
-                DecimalFormat df = new DecimalFormat("#.00");
-               String numbler = df.format(v1);
-                Log.d("TAG","数据转换"+ v1);
+                String trim = "AA BB 0A 47 CC 02 05 06 AA 05 09 06 04 03 AA 03 04 08 07 09 07 05";
+                String[] strs = trim .split("AA");
+                List<String> list = Arrays.asList(strs);
+                for (String s:list){
+                    Log.d("TAG","数据转换"+ s);
+                }
 
-                Log.d("TAG","numbler"+ numbler);
+
+
+
             }
         });
     }

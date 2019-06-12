@@ -39,7 +39,8 @@ public class DatePicier {
         currentTime.setText(now);
         String kaiTime=null;
         String jieshuTime=null;
-        kaiTime=now;
+      //  kaiTime=now;
+        kaiTime="2018-01-01 00:00";
         jieshuTime="2025-01-01 00:00";
       /*  if (adminUserId.equals(uid)){
             kaiTime=now;

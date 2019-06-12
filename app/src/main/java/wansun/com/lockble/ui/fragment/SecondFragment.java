@@ -109,13 +109,6 @@ public class SecondFragment extends BaseFragment {
     public void initEvent() {
         onReceiverData();
         data= new ArrayList();
-        BlackListBean bean=null;
-        for (int i = 0; i < 5; i++) {
-            bean=new BlackListBean();
-            bean.setIcNumbler("0123456"+i);
-            data.add(bean);
-        }
-
        adapter=new  BlackListAdapter(LocklBleApplication.getInstanceContext(),data);
         /**
          * 添加黑名单  使用数据库
@@ -123,10 +116,16 @@ public class SecondFragment extends BaseFragment {
         add_black_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // lv_black.setAdapter(adapter);
+
                 String count= ed_count.getText().toString().trim();
                 byte [] head={(byte) 0XAA, (byte) 0XBB,0X0C, (byte) 0XB1};
                 sendBleData(count,head);
+
+                BlackListBean bean=new BlackListBean();
+                    bean.setIcNumbler(count);
+                    data.add(bean);
+                lv_black.setAdapter(adapter);
+
             }
         });
         /**
@@ -148,9 +147,13 @@ public class SecondFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView tv = (TextView) view.findViewById(R.id.tv_black_list);
-                Log.d("TAG","item点击事件"+tv.getText().toString().trim());
+                String count = tv.getText().toString().trim();
+                Log.d("TAG","item点击事件"+ count);
                 //TODO 写入蓝牙数据
-
+                byte [] head={(byte) 0XAA, (byte) 0XBB,0X0C, (byte) 0XB0};
+                sendBleData(count,head);
+                data.remove(position);
+                adapter.notifyDataSetChanged();
             }
         });
         /**

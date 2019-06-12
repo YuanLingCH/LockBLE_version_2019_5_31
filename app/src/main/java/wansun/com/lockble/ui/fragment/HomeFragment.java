@@ -24,7 +24,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigInteger;
 import java.text.DecimalFormat;
-import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,6 +34,7 @@ import wansun.com.lockble.R;
 import wansun.com.lockble.adapter.AccessToInformationAdapter;
 import wansun.com.lockble.base.BaseFragment;
 import wansun.com.lockble.constant.UserCoinfig;
+import wansun.com.lockble.entity.AccessToInformationBean;
 import wansun.com.lockble.event.EventMessage;
 import wansun.com.lockble.utils.CommonUtil;
 import wansun.com.lockble.utils.ProgresssDialogUtils;
@@ -53,6 +56,8 @@ public class HomeFragment extends BaseFragment {
     public static final String REQUESTKEY_SENDANDRECIVEACTIVITY = "HomeFragment";
     boolean isFlag_qury_message=false;
     boolean isFlag_open_lock=false;
+    List quryData;
+    AccessToInformationAdapter adapter;
     Handler mhandler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -92,14 +97,14 @@ public class HomeFragment extends BaseFragment {
                     tv_ble_data.setVisibility(View.VISIBLE);
                     Bundle data2= msg.getData();
                     String value_data_from_ble= data2.getString("value_data_from_ble");
-                    tv_ble_data.setText("蓝牙返回数据："+value_data_from_ble);
+                  tv_ble_data.setText("蓝牙返回数据："+value_data_from_ble);
                     break;
 
             }
         }
     };
 
-    AccessToInformationAdapter adapter;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home_layout;
@@ -126,7 +131,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void initEvent() {
-
+        adapter=new AccessToInformationAdapter(getActivity(),quryData);
         DatePicier.initDatePicker(tv_end_time, tv_start_time, getContext());
         /**
          * 开始时间
@@ -154,8 +159,10 @@ public class HomeFragment extends BaseFragment {
             public void onClick(View v) {
                 isFlag_qury_message=true;
                 ProgresssDialogUtils.showProgressDialog("请稍后", "正在查询出入信息...", getActivity());
+
                 Log.d("TAG","startTime:"+startTime);
                 Log.d("TAG","endTime:"+endTime);
+
                 if (TextUtils.isEmpty(startTime)){
                     ToastUtil.showToast(getActivity(),"请输入开始时间");
                 return;
@@ -167,7 +174,40 @@ public class HomeFragment extends BaseFragment {
 
                     try {
 
-                        String start_time = CommonUtil.dateToStamp(startTime);
+
+                        String replaceTime = startTime.replace(" ", "-");
+                        String replace = replaceTime.replace(":", "-");
+                        String[] split = replace.split("-");
+                        StringBuffer buf=new StringBuffer();
+                        buf.append(split[1]);
+                        buf.append(split[2]);
+                        buf.append(split[3]);
+                        buf.append(split[4]);
+                        String s = buf.toString();
+                        byte[] bytesStartTime = CommonUtil.hexString2Bytes(s);
+                        Log.d("TAG","时间转化"+mBleController.bytesToHexString( bytesStartTime));
+
+                        for (int i = 0; i < split.length; i++) {
+                            Log.d("TAG","split:"+split[i]);
+                        }
+
+
+                        String replaceEndTime = endTime.replace(" ", "-");
+                        String replace1 = replaceEndTime.replace(":", "-");
+                        String[] split1 = replace1.split("-");
+
+                        StringBuffer bufendTimr=new StringBuffer();
+                        bufendTimr.append(split1[1]);
+                        bufendTimr.append(split1[2]);
+                        bufendTimr.append(split1[3]);
+                        bufendTimr.append(split1[4]);
+                        String s1 = buf.toString();
+                        byte[] bytesEndTime = CommonUtil.hexString2Bytes(s1);
+
+
+
+
+             /*           String start_time = CommonUtil.dateToStamp(startTime);
                         long l_start_time = Long.parseLong(start_time) / 1000;
                         String hexString_start_time = String.format("%08X", l_start_time);
                         String end_time = CommonUtil.dateToStamp(endTime);
@@ -180,13 +220,15 @@ public class HomeFragment extends BaseFragment {
                         for (int i = 0; i < bytes_start_time.length; i++) {
                             Log.d("TAG","hexString_start_time>>"+ bytes_start_time[i]);
                         }
-
-                        byte [] head=new byte[3];  //头部信息s
+*/
+                        byte [] head=new byte[5];  //头部信息s
                         head[0]= (byte) 0xAA;
                         head[1]= (byte) 0xBB;
                         head[2]= (byte) 0x09;
-                        byte[] bytes_one = CommonUtil.unitByteArray(head, bytes_start_time);
-                      final   byte[] bytes_send_data = CommonUtil.unitByteArray(bytes_one, bytes_end_time);
+                        head[3]= (byte) 0x21;
+                        head[4]= (byte) 0x19;
+                        byte[] bytes_one = CommonUtil.unitByteArray(head, bytesStartTime);
+                      final   byte[] bytes_send_data = CommonUtil.unitByteArray(bytes_one,  bytesEndTime );
                         mBleController.writeBuffer(bytes_send_data, new OnWriteCallback() {
                             @Override
                             public void onSuccess() {
@@ -200,12 +242,12 @@ public class HomeFragment extends BaseFragment {
                             @Override
                             public void onFailed(int state) {
                                 ToastUtil.showToast(getActivity(),"写入蓝牙数据失败："+mBleController.bytesToHexString(bytes_send_data));
-
+                                Log.d("TAG","写入蓝牙数据失败"+ mBleController.bytesToHexString(bytes_send_data));
                                 mhandler.sendEmptyMessage(UserCoinfig.QURY_MESSAGE);
                             }
                         });
 
-                    } catch (ParseException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -343,6 +385,61 @@ public class HomeFragment extends BaseFragment {
                     mhandler.sendMessage(message);
                 }else if (isFlag_qury_message){  //查询出入信息
                     isFlag_qury_message=false;
+                    quryData.clear();  //先清掉集合里面的数据
+                    String trim = mBleController.bytesToHexString(value).trim();
+                    String[] strs = trim .split("AA");
+                    List<String> list = Arrays.asList(strs);
+                   // quryData.add();  // 把数据放在集合里面  16进制
+                    for (String s:list){
+                        quryData=new ArrayList();
+                        AccessToInformationBean bean=new AccessToInformationBean();
+                        String[] split = s.split(" ");
+                        StringBuffer stringBufferYears=new StringBuffer();   //时间
+                        stringBufferYears.append("2019年");
+                        stringBufferYears.append(split[1]+"月");
+                        stringBufferYears.append(split[2]+"日");
+                        stringBufferYears.append(split[3]+":");
+                        stringBufferYears.append(split[3]);
+                        bean.setOpenLockTime(stringBufferYears.toString());
+                        StringBuffer stringBufferICNumbler=new StringBuffer();  //工号
+                        stringBufferICNumbler.append(split[12]);
+                        stringBufferICNumbler.append(split[13]);
+                        stringBufferICNumbler.append(split[14]);
+                        stringBufferICNumbler.append(split[15]);
+                        stringBufferICNumbler.append(split[16]);
+                        stringBufferICNumbler.append(split[17]);
+                        stringBufferICNumbler.append(split[18]);
+                        stringBufferICNumbler.append(split[19]);
+                        stringBufferICNumbler.append(split[20]);
+                        stringBufferICNumbler.append(split[21]);
+                        stringBufferICNumbler.append(split[22]);
+                        bean.setJobNumber(stringBufferICNumbler.toString());
+                        StringBuffer stringBufferAuth=new StringBuffer();  //工号
+                        stringBufferAuth.append(split[10]);
+                        stringBufferAuth.append(split[11]);
+                        if (stringBufferAuth.toString().equals("0D00")){
+                                bean.setCardType("蓝牙管理员");
+                        }else if (  stringBufferAuth.toString().equals("0200")){
+                            bean.setCardType("常规出入用户");
+                        }else if (  stringBufferAuth.toString().equals("0300")){
+                            bean.setCardType("出入日期限制用户");
+                        }else if (  stringBufferAuth.toString().equals("0400")){
+                            bean.setCardType("出入次数限制用户");
+                        }
+                        StringBuffer stringBufferOpenDoorType=new StringBuffer();  //开门类型
+                        stringBufferOpenDoorType.append(split[6]);
+                        stringBufferOpenDoorType.append(split[7]);
+                        if (stringBufferOpenDoorType.toString().equals("0300")){
+                            bean.setOpenLockType("刷卡开门");
+                        }else if (stringBufferOpenDoorType.toString().equals("0100")){
+                            bean.setOpenLockType("钥匙开门");
+                        }else if (stringBufferOpenDoorType.toString().equals("0200")){
+                            bean.setOpenLockType("门内反锁");
+                        }
+                        quryData.add(bean);
+                    }
+
+                    lv.setAdapter(adapter);
                 }
 
             }
