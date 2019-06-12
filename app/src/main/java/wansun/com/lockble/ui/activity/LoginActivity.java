@@ -127,8 +127,10 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         mBleController.unregistReciveListener(REQUESTKEY_SENDANDRECIVEACTIVITY);
     }
+
+
 }

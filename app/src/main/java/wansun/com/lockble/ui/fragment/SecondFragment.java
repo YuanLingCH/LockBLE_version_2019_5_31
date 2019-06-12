@@ -125,42 +125,8 @@ public class SecondFragment extends BaseFragment {
             public void onClick(View v) {
                // lv_black.setAdapter(adapter);
                 String count= ed_count.getText().toString().trim();
-
-                if (!TextUtils.isEmpty(count)){
-                    byte [] head={(byte) 0XAA, (byte) 0XBB,0X0C, (byte) 0XB1};
-                    String replace = count.replace("", "0");
-                    String pas=null;
-                    pas =  replace.substring(0,  replace.length() - 1);  //16进制的字符串
-                    final byte[] bytes = CommonUtil.toByteArray(pas);
-                    Log.d("TAG","进制"+ pas);
-                    final byte[] senData= CommonUtil.unitByteArray(head, bytes);
-                    mBleController.writeBuffer(senData, new OnWriteCallback() {
-                        @Override
-                        public void onSuccess() {
-                            Message msg=new Message();
-                            Bundle bundle=new Bundle();
-                            bundle.putString("writeSuccess",mBleController.bytesToHexString( senData));
-                            msg.setData(bundle);
-                            msg.what= UserCoinfig.WRITE_SUCCESS;
-                            mHandler.sendMessage(msg);
-
-                        }
-
-                        @Override
-                        public void onFailed(int state) {
-                            Message msg=new Message();
-                            Bundle bundle=new Bundle();
-                            bundle.putString("writeFail",mBleController.bytesToHexString( senData));
-                            msg.setData(bundle);
-                            msg.what= UserCoinfig.WRITE_FAIL;
-                            mHandler.sendMessage(msg);
-                        }
-                    });
-
-
-                }else {
-                    ToastUtil.showToast(getActivity(),"请输入账号");
-                }
+                byte [] head={(byte) 0XAA, (byte) 0XBB,0X0C, (byte) 0XB1};
+                sendBleData(count,head);
             }
         });
         /**
@@ -170,41 +136,8 @@ public class SecondFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 String count= ed_count.getText().toString().trim();
-
-                if (!TextUtils.isEmpty(count)){
-                    byte [] head={(byte) 0XAA, (byte) 0XBB,0X0C, (byte) 0XB0};
-                    String replace = count.replace("", "0");
-                    String pas=null;
-                    pas =  replace.substring(0,  replace.length() - 1);  //16进制的字符串
-                    final byte[] bytes = CommonUtil.toByteArray(pas);
-                    Log.d("TAG","进制"+ pas);
-                    final byte[] senData= CommonUtil.unitByteArray(head, bytes);
-                    mBleController.writeBuffer(senData, new OnWriteCallback() {
-                        @Override
-                        public void onSuccess() {
-                            Message msg=new Message();
-                            Bundle bundle=new Bundle();
-                            bundle.putString("writeSuccess",mBleController.bytesToHexString( senData));
-                            msg.setData(bundle);
-                            msg.what= UserCoinfig.WRITE_SUCCESS;
-                            mHandler.sendMessage(msg);
-                        }
-
-                        @Override
-                        public void onFailed(int state) {
-                            Message msg=new Message();
-                            Bundle bundle=new Bundle();
-                            bundle.putString("writeFail",mBleController.bytesToHexString( senData));
-                            msg.setData(bundle);
-                            msg.what= UserCoinfig.WRITE_FAIL;
-                            mHandler.sendMessage(msg);
-                        }
-                    });
-
-
-                }else {
-                    ToastUtil.showToast(getActivity(),"请输入账号");
-                }
+                byte [] head={(byte) 0XAA, (byte) 0XBB,0X0C, (byte) 0XB0};
+                sendBleData(count,head);
             }
 
         });
@@ -266,6 +199,43 @@ public class SecondFragment extends BaseFragment {
         });
     }
 
+    private void sendBleData(String count,byte [] head) {
+        if (!TextUtils.isEmpty(count)){
+            String replace = count.replace("", "0");
+            String pas=null;
+            pas =  replace.substring(0,  replace.length() - 1);  //16进制的字符串
+            final byte[] bytes = CommonUtil.toByteArray(pas);
+            Log.d("TAG","进制"+ pas);
+            final byte[] senData= CommonUtil.unitByteArray(head, bytes);
+            mBleController.writeBuffer(senData, new OnWriteCallback() {
+                @Override
+                public void onSuccess() {
+                    Message msg=new Message();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("writeSuccess",mBleController.bytesToHexString( senData));
+                    msg.setData(bundle);
+                    msg.what= UserCoinfig.WRITE_SUCCESS;
+                    mHandler.sendMessage(msg);
+
+                }
+
+                @Override
+                public void onFailed(int state) {
+                    Message msg=new Message();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("writeFail",mBleController.bytesToHexString( senData));
+                    msg.setData(bundle);
+                    msg.what= UserCoinfig.WRITE_FAIL;
+                    mHandler.sendMessage(msg);
+                }
+            });
+
+
+        }else {
+            ToastUtil.showToast(getActivity(),"请输入账号");
+        }
+    }
+
     @Override
     public void initData() {
 
@@ -278,7 +248,7 @@ public class SecondFragment extends BaseFragment {
         mBleController.registReciveListener(REQUESTKEY_SENDANDRECIVEACTIVITY, new OnReceiverCallback() {
             @Override
             public void onRecive(byte[] value) {
-            Message msg=new Message();
+                Message msg=new Message();
                 Bundle bundle=new Bundle();
                 bundle.putString("timeCheckOut",mBleController.bytesToHexString(value));
                 msg.setData(bundle);
@@ -289,8 +259,9 @@ public class SecondFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
         mBleController.unregistReciveListener(REQUESTKEY_SENDANDRECIVEACTIVITY);
     }
+
 }

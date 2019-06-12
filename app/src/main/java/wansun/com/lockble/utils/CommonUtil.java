@@ -26,27 +26,6 @@ public class CommonUtil {
     }
 
     /**
-     * 把16进制字符串转换成字节数组
-     * @return byte[]
-     */
-    public static byte[] hexStringToByte(String hex) {
-        int len = (hex.length() / 2);
-        byte[] result = new byte[len];
-        char[] achar = hex.toCharArray();
-        for (int i = 0; i < len; i++) {
-            int pos = i * 2;
-            result[i] = (byte) (toByte(achar[pos]) << 4 | toByte(achar[pos + 1]));
-        }
-        return result;
-    }
-
-    private static int toByte(char c) {
-        byte b = (byte) "0123456789ABCDEF".indexOf(c);
-        return b;
-    }
-
-
-    /**
      * 合并byte数组
      */
     public static byte[] unitByteArray(byte[] byte1,byte[] byte2){
@@ -122,15 +101,17 @@ public class CommonUtil {
         }
         return sb.toString();
     }
+
+    /**
+     * 把16进制字符串转化为byte数组
+     * @param hexString
+     * @return
+     */
     public static byte[] toByteArray(String hexString) {
 
         if (TextUtils.isEmpty(hexString))
-
             throw new IllegalArgumentException("this hexString must not be empty");
-
-
-
-        hexString = hexString.toLowerCase();
+           hexString = hexString.toLowerCase();
 
         final byte[] byteArray = new byte[hexString.length() / 2];
 
@@ -145,10 +126,27 @@ public class CommonUtil {
             byteArray[i] = (byte) (high << 4 | low);
 
             k += 2;
-
         }
-
         return byteArray;
+    }
 
+
+    /**
+     * 将byte数组转为16进制字符串 此方法主要目的为方便Log的显示
+     */
+    public String bytesToHexString(byte[] src) {
+        StringBuilder stringBuilder = new StringBuilder("");
+        if (src == null || src.length <= 0) {
+            return null;
+        }
+        for (byte aSrc : src) {
+            int v = aSrc & 0xFF;
+            String hv = Integer.toHexString(v);
+            if (hv.length() < 2) {
+                stringBuilder.append(0);
+            }
+            stringBuilder.append(hv.toUpperCase()).append(" ");
+        }
+        return stringBuilder.toString();
     }
 }

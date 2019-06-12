@@ -361,6 +361,14 @@ public class HomeFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mBleController.unregistReciveListener(REQUESTKEY_SENDANDRECIVEACTIVITY);
+        Log.d("TAG","onStop()...");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
