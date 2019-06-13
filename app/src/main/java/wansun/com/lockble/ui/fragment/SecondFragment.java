@@ -54,7 +54,6 @@ public class SecondFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
-
                 case UserCoinfig.TIME_CHECK_OUT:
                     Bundle data = msg.getData();
                     if (data!=null){
