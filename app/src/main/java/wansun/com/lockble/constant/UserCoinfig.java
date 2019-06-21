@@ -21,4 +21,5 @@ public class UserCoinfig {
     public static final int TIME_CHECK_OUT=0x09;  //锁的时间校验
     public static final int WRITE_SUCCESS=0x10;
     public static final int WRITE_FAIL=0x11;
+    public static final int LOCK_ID=0x12;
 }

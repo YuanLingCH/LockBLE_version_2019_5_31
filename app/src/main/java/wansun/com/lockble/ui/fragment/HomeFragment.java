@@ -47,7 +47,7 @@ import wansun.com.lockble.widget.DatePicier;
 
 public class HomeFragment extends BaseFragment {
     ImageView iv_visit_back;
-    TextView tv_visit_tobar,tv_start_time,tv_end_time,tv_ble_data,tv_electric_message,tv_time;
+    TextView tv_visit_tobar,tv_start_time,tv_end_time,tv_ble_data,tv_electric_message,tv_time,tv_door_message;
     LinearLayout ll_start_time,ll_end_time;
     ListView lv;
     Button but_qury_message,but_open_lock;
@@ -97,7 +97,14 @@ public class HomeFragment extends BaseFragment {
                     tv_ble_data.setVisibility(View.VISIBLE);
                     Bundle data2= msg.getData();
                     String value_data_from_ble= data2.getString("value_data_from_ble");
-                  tv_ble_data.setText("蓝牙返回数据："+value_data_from_ble);
+                    StringBuffer buffer=new StringBuffer();
+                    buffer.append(value_data_from_ble);
+                    tv_ble_data.setText("蓝牙返回数据："+buffer.toString().trim());
+                    break;
+                case UserCoinfig.LOCK_ID:   //蓝牙所的id
+                    Bundle data3 = msg.getData();
+                    String value_lock_id= data3.getString("value_time");
+                    tv_door_message.setText(value_lock_id);
                     break;
 
             }
@@ -127,6 +134,7 @@ public class HomeFragment extends BaseFragment {
         but_open_lock= (Button) root.findViewById(R.id.but_open_lock);
         tv_electric_message= (TextView) root.findViewById(R.id.tv_electric_message);
         tv_time= (TextView) root.findViewById(R.id.tv_time);
+        tv_door_message= (TextView) root.findViewById(R.id.tv_door_message);   //门的编号
     }
 
     @Override
@@ -173,8 +181,6 @@ public class HomeFragment extends BaseFragment {
                 }
 
                     try {
-
-
                         String replaceTime = startTime.replace(" ", "-");
                         String replace = replaceTime.replace(":", "-");
                         String[] split = replace.split("-");
@@ -289,6 +295,7 @@ public class HomeFragment extends BaseFragment {
 
     boolean isflag_electmessage=true;
     boolean isflag_time=true;
+    boolean isflag_ble_id=true;
     private void sendBleData() {
         /**
          * 检测蓝牙的电量和时间
@@ -335,7 +342,30 @@ public class HomeFragment extends BaseFragment {
                 });
             }
         },1000);
+        /**
+         * 查询锁的id
+         */
 
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                final byte[]bytes={(byte) 0xAA, (byte) 0xBB,0x02 , 0x70};
+                mBleController.writeBuffer(bytes, new OnWriteCallback() {
+                    @Override
+                    public void onSuccess() {
+                        mhandler.sendEmptyMessage(UserCoinfig.WRITE_SUCCESS);
+
+                    }
+
+                    @Override
+                    public void onFailed(int state) {
+
+                        mhandler.sendEmptyMessage(UserCoinfig.WRITE_FAIL);
+
+                    }
+                });
+            }
+        },1000);
     }
 
     @Override
@@ -440,6 +470,17 @@ public class HomeFragment extends BaseFragment {
                     }
 
                     lv.setAdapter(adapter);
+                }else if (isflag_ble_id){
+                    isflag_ble_id=false;
+                    Message message=new Message();
+                    Bundle bundle = new Bundle();
+                    String trim = mBleController.bytesToHexString(value).trim();
+                    String[] split = trim.split(" ");
+                    String data_="船锁ID："+split[6]+split[7]+"号";
+                    bundle.putString("value_time", data_);// 将服务器返回的订单号传到Bundle中，，再通过handler传出
+                    message.what=UserCoinfig.LOCK_ID;
+                    message.setData(bundle);
+                    mhandler.sendMessage(message);
                 }
 
             }

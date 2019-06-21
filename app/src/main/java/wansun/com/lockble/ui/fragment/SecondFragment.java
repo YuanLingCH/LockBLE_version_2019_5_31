@@ -67,7 +67,6 @@ public class SecondFragment extends BaseFragment {
                         String writeSuccess = data1.getString("writeSuccess");
                         tv_write_data.setText("写入蓝牙数据成功："+writeSuccess);
                     }
-
                     break;
                 case UserCoinfig.WRITE_FAIL:
                     Bundle data2 = msg.getData();
@@ -132,14 +131,12 @@ public class SecondFragment extends BaseFragment {
         add_black_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String count= ed_count.getText().toString().trim();
                 byte [] head={(byte) 0XAA, (byte) 0XBB,0X0C, (byte) 0XB1};
                 sendBleData(count,head);
-
                 BlackListBean bean=new BlackListBean();
-                    bean.setIcNumbler(count);
-                    data.add(bean);
+                bean.setIcNumbler(count);
+                data.add(bean);
                 lv_black.setAdapter(adapter);
 
             }
@@ -308,7 +305,7 @@ public class SecondFragment extends BaseFragment {
                     byte[] sendNumbler_localtion= CommonUtil.unitByteArray(sendNumbler_floor, bytes_localtion);   // 头部拼接船号 船位置
 
 
-                    int n_id = Integer.parseInt(id);
+                    int n_id = Integer.parseInt(id);    //船锁ID
                     String s_id=null;
                     byte[] bytes_id;
                     if (n_id<10){

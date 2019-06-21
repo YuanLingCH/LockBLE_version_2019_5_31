@@ -2,23 +2,17 @@ package wansun.com.lockble.ui.activity;
 
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hansion.h_ble.BleController;
-import com.hansion.h_ble.callback.OnReceiverCallback;
-import com.hansion.h_ble.callback.OnWriteCallback;
 
 import wansun.com.lockble.R;
 import wansun.com.lockble.base.BaseActivity;
 import wansun.com.lockble.constant.UserCoinfig;
-import wansun.com.lockble.utils.CommonUtil;
-import wansun.com.lockble.utils.ProgresssDialogUtils;
 import wansun.com.lockble.utils.ToastUtil;
 
 /**
@@ -32,6 +26,7 @@ public class LoginActivity extends BaseActivity {
     Button but_submit,but_cancle;
     private BleController mBleController;
     public static final String REQUESTKEY_SENDANDRECIVEACTIVITY = "LoginActivity";
+    String userName=null;
     @Override
     public int getLayoutId() {
         return R.layout.activity_login;
@@ -56,8 +51,10 @@ public class LoginActivity extends BaseActivity {
         String userType = getIntent().getStringExtra(UserCoinfig.LOGIN_TYPE);
         if (userType.equals(UserCoinfig.LOGIN)){ //普通用户
             tv_user.setText("普通用户：");
+            userName="666666";
         }else if (userType.equals(UserCoinfig.ADMIN_LOGIN)){  //蓝牙用户
             tv_user.setText("蓝牙管理员：");
+            userName="888888";
         }
 
         iv_visit_back.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +76,7 @@ public class LoginActivity extends BaseActivity {
 
                 String passWord = et_password.getText().toString().trim();
                 if (!TextUtils.isEmpty(passWord)){
-                    ProgresssDialogUtils.showProgressDialog("提示","写入数据...",LoginActivity.this);
+       /*   ProgresssDialogUtils.showProgressDialog("提示","写入数据...",LoginActivity.this);
                 byte[] bytesPassWord = CommonUtil.hexString2Bytes(passWord);
                 byte [] head={(byte) 0xAA, (byte) 0XBB,0X08, (byte) 0X82};
                 final byte[] bytes = CommonUtil.unitByteArray(head, bytesPassWord);
@@ -98,7 +95,14 @@ public class LoginActivity extends BaseActivity {
                         ProgresssDialogUtils.hideProgressDialog();
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
                     }
-                });
+                });*/
+
+            if (passWord.equals(userName)){
+                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+            }else {
+                ToastUtil.showToast(LoginActivity.this,"请输入密码错误");
+            }
+
                 }else {
                     ToastUtil.showToast(LoginActivity.this,"请输入密码");
                 }
@@ -109,7 +113,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        mBleController.registReciveListener(REQUESTKEY_SENDANDRECIVEACTIVITY, new OnReceiverCallback() {
+/*        mBleController.registReciveListener(REQUESTKEY_SENDANDRECIVEACTIVITY, new OnReceiverCallback() {
             @Override
             public void onRecive(byte[] value) {
               //  ToastUtil.showToast(LoginActivity.this,"蓝牙返回数据："+mBleController.bytesToHexString(value));
@@ -123,7 +127,7 @@ public class LoginActivity extends BaseActivity {
 
                 }
             }
-        });
+        });*/
     }
 
     @Override
