@@ -98,7 +98,7 @@ public class HomeFragment extends BaseFragment {
                     Bundle data2= msg.getData();
                     String value_data_from_ble= data2.getString("value_data_from_ble");
                     StringBuffer buffer=new StringBuffer();
-                    buffer.append(value_data_from_ble);
+                    buffer.append(value_data_from_ble);   //数据的拼接
                     tv_ble_data.setText("蓝牙返回数据："+buffer.toString().trim());
                     break;
                 case UserCoinfig.LOCK_ID:   //蓝牙所的id
@@ -370,7 +370,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        mBleController.registReciveListener(REQUESTKEY_SENDANDRECIVEACTIVITY, new OnReceiverCallback() {
+               mBleController.registReciveListener(REQUESTKEY_SENDANDRECIVEACTIVITY, new OnReceiverCallback() {
             @Override
             public void onRecive(byte[] value) {
 
@@ -429,7 +429,7 @@ public class HomeFragment extends BaseFragment {
                         stringBufferYears.append(split[1]+"月");
                         stringBufferYears.append(split[2]+"日");
                         stringBufferYears.append(split[3]+":");
-                        stringBufferYears.append(split[3]);
+                        stringBufferYears.append(split[4]);
                         bean.setOpenLockTime(stringBufferYears.toString());
                         StringBuffer stringBufferICNumbler=new StringBuffer();  //工号
                         stringBufferICNumbler.append(split[12]);
