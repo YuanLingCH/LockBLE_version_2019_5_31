@@ -1,5 +1,6 @@
 package com.hansion.h_ble;
 
+import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -11,6 +12,7 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
@@ -146,7 +148,18 @@ AppCompatActivity mActivity;
     }
 
 
-
+    /**
+     * 改变BLE默认的单次发包、收包的最大长度,用于android 5.0及以上版本
+     * @param mtu
+     * @return
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public boolean requestMtu(int mtu){
+        if (mBluetoothGatt != null) {
+            return mBluetoothGatt.requestMtu(mtu);
+        }
+        return false;
+    }
 
 
     /**

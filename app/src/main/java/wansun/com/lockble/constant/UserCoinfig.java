@@ -14,7 +14,8 @@ public class UserCoinfig {
     public  static  final  int open_lock_over_or_fail=0x02;
     public static final int TIME_CHECK=0x03;
     public static final int TIME_CHECK_FAIL=0x04;
-    public static final int QURY_MESSAGE=0x05;
+    public static final int QURY_MESSAGE_SUCESS=0x05;
+    public static final int QURY_MESSAGE_FAIL=0x013;
     public static final int ELECTRIC_MESSAGE=0x06;
     public static final int TIME_SUCCESS=0x07;
     public static final int DATA_FROM_BLE=0x08;
@@ -22,4 +23,5 @@ public class UserCoinfig {
     public static final int WRITE_SUCCESS=0x10;
     public static final int WRITE_FAIL=0x11;
     public static final int LOCK_ID=0x12;
+    public static final int BOATMESSAGE=0x14;
 }

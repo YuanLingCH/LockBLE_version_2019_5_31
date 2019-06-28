@@ -38,8 +38,6 @@ import static wansun.com.lockble.utils.ProgresssDialogUtils.showProgressDialog;
  */
 
 public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemClickListener {
-
-
     private static final int REQUEST_ENABLE_BT =0x01 ;
     private BleController mBleController;
     private static String LOGTAG = "AppCompatActivity";
@@ -57,7 +55,6 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
 
     @Override
     public void initView() {
-
         mDeviceList = (ListView) findViewById(R.id.mDeviceList);
         tv_visit_tobar= (TextView) findViewById(R.id.tv_visit_tobar);
         tv_visit_tobar.setText("蓝牙扫描");
@@ -65,13 +62,8 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
         iv_visit_back.setVisibility(View.INVISIBLE);
         but_scan_ble= (Button) findViewById(R.id.but_scan_ble);
         tv_scan_ble= (TextView) findViewById(R.id.tv_scan_ble);
-
-
         // TODO  第一步：初始化
         mBleController = BleController.getInstance().init(this);
-
-
-
     }
 
     @Override
@@ -80,7 +72,6 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
             @Override
             public void onClick(View v) {
                 // TODO  第二步：搜索设备，获取列表后进行展示
-
                 checkBluetoothPermission();
             }
         });
@@ -98,9 +89,6 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
                         startActivity(new Intent(ScanBleActivity.this,WelcomeActivity.class));
                     }else if ("DD".equals(s)){
                         Toast.makeText(ScanBleActivity.this, "蓝牙连接失败，请重新连接", Toast.LENGTH_SHORT).show();
-
-
-
                     }
 
                 }
@@ -109,9 +97,7 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
 
 
     private void scanDevices() {
-
         ProgresssDialogUtils.showProgressDialog("请稍后", "正在搜索设备...",this);
-
         mBleController.scanBle(0, new ScanCallback() {
             @Override
             public void onSuccess() {
@@ -123,8 +109,6 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
                     Toast.makeText(ScanBleActivity.this, "未搜索到Ble设备", Toast.LENGTH_SHORT).show();
                 }
             }
-
-
             @Override
             public void onScanning(BluetoothDevice device, int rssi, byte[] scanRecord) {
                 if (!bluetoothDevices.contains(device)) {
@@ -172,19 +156,17 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
 
                             }
                         });
-
-
             }
 
             @Override
             public void onConnFailed() {
                 hideProgressDialog();
                 Toast.makeText(ScanBleActivity.this, "连接超时，请重试", Toast.LENGTH_SHORT).show();
-            // startActivity(new Intent(ScanBleActivity.this,WelcomeActivity.class));
+          // startActivity(new Intent(ScanBleActivity.this,WelcomeActivity.class));
+        //  startActivity(new Intent(ScanBleActivity.this,GreenDaoActivity.class));
             }
         });
     }
-
 
     /*
     校验蓝牙权限

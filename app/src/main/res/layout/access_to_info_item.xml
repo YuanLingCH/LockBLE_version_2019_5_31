@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_number"
         android:text="次数"
         android:layout_width="wrap_content"

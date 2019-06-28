@@ -23,6 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import wansun.com.lockble.R;
 import wansun.com.lockble.adapter.BlackListAdapter;
@@ -49,6 +51,7 @@ public class SecondFragment extends BaseFragment {
     private BleController mBleController;
     public static final String REQUESTKEY_SENDANDRECIVEACTIVITY = "SecondFragment";
     boolean isFlagCheckTime=false;
+    boolean isFlagBoat=false;
     Handler mHandler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -82,6 +85,19 @@ public class SecondFragment extends BaseFragment {
                         tv_data_ble_read.setText("蓝牙返回数据："+writeFail);
                     }
                     break;
+                case UserCoinfig.BOATMESSAGE:
+                    Bundle data4 = msg.getData();
+                    String trim = data4.getString("boat_message");
+                    String[] split = trim.split(" ");
+                    long dec_num = Long.parseLong(split[7], 16);
+                    long boatNumbler = Long.parseLong(split[2], 16);
+                    long boatFloor = Long.parseLong(split[4], 16);
+                    long boatLocation = Long.parseLong(split[5], 16);
+                    et_modify_ble_numbler.setText(boatNumbler+"");
+                    et_modify_ble_floor.setText(boatFloor +"");
+                    et_modify_ble_localtion.setText(boatLocation+"");
+                    et_modify_ble_id.setText(dec_num +"");
+                    break;
             }
         }
     };
@@ -111,6 +127,8 @@ public class SecondFragment extends BaseFragment {
         et_modify_ble_localtion= (EditText) root.findViewById(R.id.et_modify_ble_localtion);
         et_modify_ble_id= (EditText) root.findViewById(R.id.et_modify_ble_id);
         tv_data_ble_read= (TextView) root.findViewById(R.id.tv_data_ble_read); //读蓝牙的值
+
+
 
     }
     @Override
@@ -351,6 +369,37 @@ public class SecondFragment extends BaseFragment {
 
             }
         });
+
+        /**
+         * 查询锁的id
+         */
+
+        /**
+         * 查询锁的id
+         */
+        Timer timer=new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                final byte[]bytes={(byte) 0xAA, (byte) 0xBB,0x02 , 0x70};
+                mBleController.writeBuffer(bytes, new OnWriteCallback() {
+                    @Override
+                    public void onSuccess() {
+                        isFlagBoat=true;
+                        mHandler.sendEmptyMessage(UserCoinfig.WRITE_SUCCESS);
+
+                    }
+
+                    @Override
+                    public void onFailed(int state) {
+
+                        mHandler.sendEmptyMessage(UserCoinfig.WRITE_FAIL);
+
+                    }
+                });
+            }
+        },2000);
+
     }
 
     private void sendBleData(String count,byte [] head) {
@@ -417,6 +466,14 @@ public class SecondFragment extends BaseFragment {
                     bundle.putString("timeCheckOut",mBleController.bytesToHexString(value));
                     msg.setData(bundle);
                     msg.what= UserCoinfig.TIME_CHECK_OUT;
+                    mHandler.sendMessage(msg);
+                }else if (isFlagBoat){
+                    isFlagBoat=false;
+                    Message msg=new Message();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("boat_message",mBleController.bytesToHexString(value));
+                    msg.setData(bundle);
+                    msg.what= UserCoinfig.BOATMESSAGE;
                     mHandler.sendMessage(msg);
                 }
 

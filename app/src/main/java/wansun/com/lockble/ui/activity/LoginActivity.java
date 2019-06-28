@@ -128,6 +128,8 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });*/
+        mBleController.requestMtu(512);   // 修改蓝牙接收数据的大小
+
     }
 
     @Override
