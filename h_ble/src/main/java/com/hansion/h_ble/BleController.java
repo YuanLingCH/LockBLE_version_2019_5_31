@@ -146,8 +146,6 @@ AppCompatActivity mActivity;
             Log.e(LOGTAG, "Bluetooth is not open!");
         }
     }
-
-
     /**
      * 改变BLE默认的单次发包、收包的最大长度,用于android 5.0及以上版本
      * @param mtu
