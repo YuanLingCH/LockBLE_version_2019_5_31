@@ -136,7 +136,6 @@ AppCompatActivity mActivity;
         }
         return this;
     }
-
     //打开蓝牙
     public void openBle(){
         if (!isEnable()) {
