@@ -93,7 +93,7 @@ public class SecondFragment extends BaseFragment {
                     long boatNumbler = Long.parseLong(split[2], 16);
                     long boatFloor = Long.parseLong(split[4], 16);
                     long boatLocation = Long.parseLong(split[5], 16);
-                    et_modify_ble_numbler.setText(boatNumbler+"");
+                    et_modify_ble_numbler.setText(split[2]+split[3]+"");
                     et_modify_ble_floor.setText(boatFloor +"");
                     et_modify_ble_localtion.setText(boatLocation+"");
                     et_modify_ble_id.setText(dec_num +"");

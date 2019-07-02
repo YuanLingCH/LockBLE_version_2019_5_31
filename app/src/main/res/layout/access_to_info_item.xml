@@ -4,31 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:visibility="gone"
+        android:layout_marginLeft="@dimen/distance_3"
+        android:textSize="11sp"
         android:id="@+id/tv_number"
         android:text="次数"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
-        android:gravity="center"
+        android:layout_marginLeft="@dimen/distance_3"
+        android:textSize="11sp"
         android:id="@+id/tv_open_lock_time"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:text="时间"
         android:layout_height="wrap_content" />
     <TextView
-        android:gravity="center"
+        android:textSize="11sp"
         android:id="@+id/tv_job_number"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:text="工号"
         android:layout_height="wrap_content" />
     <TextView
+        android:textSize="11sp"
         android:id="@+id/tv_open_lock_typer"
         android:layout_width="wrap_content"
         android:text="开锁类型"
         android:layout_height="wrap_content" />
     <TextView
+        android:textSize="11sp"
         android:id="@+id/tv_open_card_type"
         android:layout_width="wrap_content"
         android:text="卡类型"

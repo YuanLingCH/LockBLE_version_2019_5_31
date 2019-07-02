@@ -4,7 +4,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,17 +45,10 @@ public class GreenDaoActivity extends BaseActivity {
         but_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-        String trim="AA 00 BB CC 22 AA CC OO 88 BB AA MM CC";
-                String[] strs = trim .split("AA");
-                List data=new ArrayList();
-                data.add("CC");
-                List<String> list = Arrays.asList(strs);
-                if (trim.endsWith("CC")){
-                    Log.d("TAG","方法走了CC"+"data.size()"+data.size());
-                }
-                for (String s:list) {
-                    Log.d("TAG","便利数据"+s);
-                }
+        String trim="00";
+                String[] strs = trim .split("");
+                    Log.d("TAG","便利数据"+strs[1]);
+
             }
         });
         /**

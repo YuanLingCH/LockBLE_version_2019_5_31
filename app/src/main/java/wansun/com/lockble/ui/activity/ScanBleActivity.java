@@ -162,8 +162,8 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
             public void onConnFailed() {
                 hideProgressDialog();
                 Toast.makeText(ScanBleActivity.this, "连接超时，请重试", Toast.LENGTH_SHORT).show();
-          // startActivity(new Intent(ScanBleActivity.this,WelcomeActivity.class));
-        //  startActivity(new Intent(ScanBleActivity.this,GreenDaoActivity.class));
+       // startActivity(new Intent(ScanBleActivity.this,WelcomeActivity.class));
+       //  startActivity(new Intent(ScanBleActivity.this,GreenDaoActivity.class));
             }
         });
     }

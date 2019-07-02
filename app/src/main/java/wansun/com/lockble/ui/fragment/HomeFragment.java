@@ -140,7 +140,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void initView() {
-      bufferData=new StringBuffer();
+        bufferData=new StringBuffer();
         acceptBleData=new ArrayList();
         iv_visit_back= (ImageView) root.findViewById(R.id.iv_visit_back);
         iv_visit_back.setVisibility(View.INVISIBLE);
@@ -237,23 +237,6 @@ public class HomeFragment extends BaseFragment {
                         String s1 = bufendTimr.toString();
                         byte[] bytesEndTime = CommonUtil.hexString2Bytes(s1);
                         Log.d("TAG","结束时间转化"+mBleController.bytesToHexString(bytesEndTime));
-
-
-
-             /*           String start_time = CommonUtil.dateToStamp(startTime);
-                        long l_start_time = Long.parseLong(start_time) / 1000;
-                        String hexString_start_time = String.format("%08X", l_start_time);
-                        String end_time = CommonUtil.dateToStamp(endTime);
-                        long l_end_time = Long.parseLong(end_time) / 1000;
-                        String hexString_l_end_time = String.format("%08X", l_end_time);
-                        byte[] bytes_start_time = CommonUtil.hexString2Bytes(hexString_start_time );
-                        byte[] bytes_end_time = CommonUtil.hexString2Bytes(hexString_l_end_time );
-                        Log.d("TAG","hexString_start_time"+hexString_start_time);
-                        Log.d("TAG","hexString_l_end_time"+hexString_l_end_time );
-                        for (int i = 0; i < bytes_start_time.length; i++) {
-                            Log.d("TAG","hexString_start_time>>"+ bytes_start_time[i]);
-                        }
-*/
                         byte [] head=new byte[5];  //头部信息s
                         head[0]= (byte) 0xAA;
                         head[1]= (byte) 0xBB;
@@ -308,7 +291,6 @@ public class HomeFragment extends BaseFragment {
         but_open_lock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
            isFlag_open_lock=true;
                 mhandler.sendEmptyMessage(UserCoinfig.open_lock);
                 final byte[]bytes={(byte) 0xAA, (byte) 0xBB,0x08 , (byte) 0x0A};
@@ -340,31 +322,45 @@ public class HomeFragment extends BaseFragment {
     boolean isflag_time=true;
     boolean isflag_ble_id=true;
     private void sendBleData() {
+        isflag_ble_id=true;
+        isflag_time=true;
+        isflag_electmessage=true;
+        mBleController = BleController.getInstance();
+        Log.d("TAG","生命周期");
+
+
         /**
          * 检测蓝牙的电量和时间
          */
         final byte[]bytes={(byte) 0xAA, (byte) 0xBB,0x02 , 0x41};
-        mBleController.writeBuffer(bytes, new OnWriteCallback() {
+        Timer timer=new Timer();
+        timer.schedule(new TimerTask() {
             @Override
-            public void onSuccess() {
+            public void run() {
+                mBleController.writeBuffer(bytes, new OnWriteCallback() {
+                    @Override
+                    public void onSuccess() {
 
-           tv_ble_data.setVisibility(View.VISIBLE);
-            tv_ble_data.setText("写入蓝牙数据："+mBleController.bytesToHexString(bytes));
+                      //  tv_ble_data.setVisibility(View.VISIBLE);
+                       // tv_ble_data.setText("写入蓝牙数据："+mBleController.bytesToHexString(bytes));
 
+                    }
+
+                    @Override
+                    public void onFailed(int state) {
+
+
+
+                        mhandler.sendEmptyMessage(UserCoinfig.open_lock_over_or_fail);
+                    }
+                });
             }
+        },200);
 
-            @Override
-            public void onFailed(int state) {
-
-
-
-                mhandler.sendEmptyMessage(UserCoinfig.open_lock_over_or_fail);
-            }
-        });
         /**
          * 时钟查询
          */
-        Timer timer=new Timer();
+
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -467,68 +463,15 @@ public class HomeFragment extends BaseFragment {
                         String bleData = bufferbleData.toString().trim();
                         String[] strs = bleData .split("AA");
                         List<String> list = Arrays.asList(strs);
+                        quryData=new ArrayList();
                         for (String s:list){
-                            quryData=new ArrayList();
-               /*             Message message=new Message();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("ble_data",s);
-                            message.what=0x100;
-                            message.setData(bundle);
-                            mhandler.sendMessage(message);
-
-                            quryData=new ArrayList();
-                          AccessToInformationBean bean=new AccessToInformationBean();
-                            String[] split = s.split(" ");
-                            StringBuffer stringBufferYears=new StringBuffer();   //时间
-                            stringBufferYears.append("2019年");
-                            stringBufferYears.append(split[1]+"月");
-                            stringBufferYears.append(split[2]+"日");
-                            stringBufferYears.append(split[3]+":");
-                            stringBufferYears.append(split[4]);
-                            bean.setOpenLockTime(stringBufferYears.toString());
-                            StringBuffer stringBufferICNumbler=new StringBuffer();  //工号
-                            stringBufferICNumbler.append(split[12]);
-                            stringBufferICNumbler.append(split[13]);
-                            stringBufferICNumbler.append(split[14]);
-                            stringBufferICNumbler.append(split[15]);
-                            stringBufferICNumbler.append(split[16]);
-                            stringBufferICNumbler.append(split[17]);
-                            stringBufferICNumbler.append(split[18]);
-                            stringBufferICNumbler.append(split[19]);
-                            stringBufferICNumbler.append(split[20]);
-                            stringBufferICNumbler.append(split[21]);
-                            stringBufferICNumbler.append(split[22]);
-                            bean.setJobNumber(stringBufferICNumbler.toString());
-                            StringBuffer stringBufferAuth=new StringBuffer();  //工号
-                            stringBufferAuth.append(split[10]);
-                            stringBufferAuth.append(split[11]);
-                            if (stringBufferAuth.toString().equals("0D00")){
-                                bean.setCardType("蓝牙管理员");
-                            }else if (  stringBufferAuth.toString().equals("0200")){
-                                bean.setCardType("常规出入用户");
-                            }else if (  stringBufferAuth.toString().equals("0300")){
-                                bean.setCardType("出入日期限制用户");
-                            }else if (  stringBufferAuth.toString().equals("0400")){
-                                bean.setCardType("出入次数限制用户");
-                            }
-                            StringBuffer stringBufferOpenDoorType=new StringBuffer();  //开门类型
-                            stringBufferOpenDoorType.append(split[6]);
-                            stringBufferOpenDoorType.append(split[7]);
-                            if (stringBufferOpenDoorType.toString().equals("0300")){
-                                bean.setOpenLockType("刷卡开门");
-                            }else if (stringBufferOpenDoorType.toString().equals("0100")){
-                                bean.setOpenLockType("钥匙开门");
-                            }else if (stringBufferOpenDoorType.toString().equals("0200")){
-                                bean.setOpenLockType("门内反锁");
-                            }*/
-                          // quryData.add(bean);
-                         quryData.add(s);
+                            Log.d("TAG","遍历数据"+s);
+                            quryData.add(s);
                         }
-                     adapter=new AccessToInformationAdapter(getActivity(),quryData);
-                    lv.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-
-
+                        quryData.remove(0);
+                        adapter=new AccessToInformationAdapter(getActivity(),quryData);
+                        lv.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                     }
                 }else if (isflag_ble_id){
                     isflag_ble_id=false;
@@ -563,7 +506,8 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBleController = BleController.getInstance();
+        Log.d("TAG","生命周期onCreate");
+
         EventBus.getDefault().register(this);
 
     }
