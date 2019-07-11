@@ -1,1 +1,1 @@
-include ':app', ':h_ble', ':EZUIKitDemo'
+include ':app', ':h_ble'

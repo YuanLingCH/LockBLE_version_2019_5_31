@@ -1,5 +1,4 @@
 package wansun.com.lockble.ui.activity;
-
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
@@ -7,14 +6,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.hansion.h_ble.BleController;
-
 import wansun.com.lockble.R;
 import wansun.com.lockble.base.BaseActivity;
 import wansun.com.lockble.constant.UserCoinfig;
 import wansun.com.lockble.utils.ToastUtil;
-
 /**
  * Created by User on 2019/5/29.
  */
@@ -27,6 +23,7 @@ public class LoginActivity extends BaseActivity {
     private BleController mBleController;
     public static final String REQUESTKEY_SENDANDRECIVEACTIVITY = "LoginActivity";
     String userName=null;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_login;

@@ -49,7 +49,7 @@ public class HomeFragment extends BaseFragment {
     TextView tv_visit_tobar,tv_start_time,tv_end_time,tv_ble_data,tv_electric_message,tv_time,tv_door_message,tv_ble_data_write;
     LinearLayout ll_start_time,ll_end_time;
     ListView lv;
-    Button but_qury_message,but_open_lock;
+    Button but_qury_message,but_open_lock,but_exit_ble;
     String startTime,endTime;
     private BleController mBleController;
     public static final String REQUESTKEY_SENDANDRECIVEACTIVITY = "HomeFragment";
@@ -158,6 +158,7 @@ public class HomeFragment extends BaseFragment {
         tv_time= (TextView) root.findViewById(R.id.tv_time);
         tv_door_message= (TextView) root.findViewById(R.id.tv_door_message);   //门的编号
         tv_ble_data_write= (TextView) root.findViewById(R.id.tv_ble_data_write);
+        but_exit_ble=(Button) root.findViewById(R.id.but_exit_ble);
     }
 
     @Override
@@ -315,6 +316,28 @@ public class HomeFragment extends BaseFragment {
             }
         });
 
+        but_exit_ble.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final byte[]bytes={(byte) 0xAA, (byte) 0xBB,0x02 , (byte) 0x52};
+                mBleController.writeBuffer(bytes, new OnWriteCallback() {
+                    @Override
+                    public void onSuccess() {
+                        ToastUtil.showToast(getActivity(),"写入蓝牙数据成功："+mBleController.bytesToHexString(bytes));
+                        tv_ble_data.setVisibility(View.VISIBLE);
+                        tv_ble_data.setText("写入蓝牙数据："+mBleController.bytesToHexString(bytes));
+                    }
+
+                    @Override
+                    public void onFailed(int state) {
+                        ToastUtil.showToast(getActivity(),"写入蓝牙数据失败："+mBleController.bytesToHexString(bytes));
+
+                        mhandler.sendEmptyMessage(UserCoinfig.open_lock_over_or_fail);
+                    }
+                });
+            }
+        });
+
     sendBleData();
     }
 
@@ -409,6 +432,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void initData() {
+                quryData=new ArrayList();
                mBleController.registReciveListener(REQUESTKEY_SENDANDRECIVEACTIVITY, new OnReceiverCallback() {
             @Override
             public void onRecive(byte[] value) {
@@ -451,19 +475,15 @@ public class HomeFragment extends BaseFragment {
                     message.setData(bundle);
                     mhandler.sendMessage(message);
                 }else if (isFlag_qury_message){  //查询出入信息
-                  //  isFlag_qury_message=false;
-                  //  quryData.clear();  //先清掉集合里面的数据
-              String trim = mBleController.bytesToHexString(value).trim();
-
-            if (!trim.equals("CC")) {   //有数据才进来
-                acceptBleData.add(trim);  //一条数据
-                bufferbleData.append(trim);
-            }
-                    if (trim.endsWith("CC")&&acceptBleData.size()>1){   //最后包含CC 就去刷新界面并且有数据
+                    String trim = mBleController.bytesToHexString(value).trim();
+                    //有数据才进来
+                    acceptBleData.add(trim);  //一条数据
+                    bufferbleData.append(trim);
+                    if (bufferbleData.toString().trim().endsWith("CC")&&acceptBleData.size()>1){   //最后包含CC 就去刷新界面并且有数据
                         String bleData = bufferbleData.toString().trim();
                         String[] strs = bleData .split("AA");
                         List<String> list = Arrays.asList(strs);
-                        quryData=new ArrayList();
+
                         for (String s:list){
                             Log.d("TAG","遍历数据"+s);
                             quryData.add(s);

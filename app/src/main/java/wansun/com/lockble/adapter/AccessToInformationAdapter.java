@@ -78,33 +78,33 @@ public class AccessToInformationAdapter extends BaseAdapter {
         StringBuffer stringBufferAuth=new StringBuffer();  //工号
         stringBufferAuth.append(split[11]);
         stringBufferAuth.append(split[12]);
+
         if (stringBufferAuth.toString().equals("0D00")){
-            bean.setCardType("蓝牙管理员");
+            bean.setCardType("管理");
         }else if (  stringBufferAuth.toString().equals("0200")){
-            bean.setCardType("常规出入用户");
+            bean.setCardType("常规");
         }else if (  stringBufferAuth.toString().equals("0300")){
-            bean.setCardType("出入日期限制用户");
+            bean.setCardType("限时");
         }else if (  stringBufferAuth.toString().equals("0400")){
-            bean.setCardType("出入次数限制用户");
+            bean.setCardType("限次");
+        }else {
+            bean.setCardType("00");
         }
         StringBuffer stringBufferOpenDoorType=new StringBuffer();  //开门类型
         stringBufferOpenDoorType.append(split[7]);
         stringBufferOpenDoorType.append(split[8]);
-        if (stringBufferOpenDoorType.toString().equals("0300")){
+        if (stringBufferOpenDoorType.toString().equals("0301")){
             bean.setOpenLockType("刷卡开门");
         }else if (stringBufferOpenDoorType.toString().equals("0100")){
             bean.setOpenLockType("钥匙开门");
         }else if (stringBufferOpenDoorType.toString().equals("0200")){
-            bean.setOpenLockType("门内反锁");
+            bean.setOpenLockType("反锁打开");
         }else if (stringBufferOpenDoorType.toString().equals("0201")){
-            bean.setOpenLockType("门外反锁");
+            bean.setOpenLockType("反锁关闭");
+        }else if (stringBufferOpenDoorType.toString().equals("0101")){
+            bean.setOpenLockType("钥匙关门");
         }
-
-
-
-
-
-        number.setText(position+"");  // 数量没有这个返回值
+        number.setText(position+1+"");
         openLockTime.setText(bean.getOpenLockTime());
         jobNumber.setText(bean.getJobNumber());
         openLockType.setText(bean.getOpenLockType());

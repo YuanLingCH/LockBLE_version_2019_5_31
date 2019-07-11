@@ -2,11 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@color/backgroundjiemian"
     android:layout_height="match_parent">
     <include layout="@layout/tobar_layout"/>
+    <LinearLayout
+        android:background="@drawable/infowindown_shape"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/space_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 <LinearLayout
-    android:layout_marginLeft="@dimen/space_10"
-    android:layout_marginTop="@dimen/space_10"
+    android:background="@drawable/infowindown_shape"
+android:layout_margin="@dimen/space_10"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -38,6 +45,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="@dimen/space_10"
+        android:background="@drawable/infowindown_shape"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 <TextView
     android:id="@+id/tv_time"
     android:textSize="@dimen/text_16"
@@ -48,6 +62,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
     <LinearLayout
+        android:layout_marginBottom="@dimen/space_10"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -72,6 +87,13 @@
         android:layout_weight="1"
         android:layout_height="wrap_content" />
     </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="@dimen/space_10"
+        android:background="@drawable/infowindown_shape"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView
         android:text="出入信息："
         android:textSize="@dimen/text_16"
@@ -170,6 +192,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <LinearLayout
+        android:layout_marginBottom="@dimen/space_10"
         android:layout_marginRight="@dimen/space_20"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="@dimen/space_10"
@@ -220,10 +243,12 @@
             android:text="卡类型"
             android:layout_height="wrap_content" />
     </LinearLayout>
+    </LinearLayout>
     <ListView
+        android:background="@drawable/infowindown_shape"
         android:layout_marginTop="@dimen/space_5"
-        android:layout_marginRight="@dimen/space_20"
-        android:layout_marginLeft="@dimen/space_15"
+        android:layout_marginRight="@dimen/space_10"
+        android:layout_marginLeft="@dimen/space_10"
         android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

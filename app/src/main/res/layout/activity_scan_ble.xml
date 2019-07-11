@@ -7,11 +7,11 @@
     <Button
         android:id="@+id/but_scan_ble"
         android:textSize="@dimen/text_16"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_marginTop="@dimen/space_5"
         android:layout_marginRight="@dimen/space_5"
         android:layout_marginLeft="@dimen/space_5"
-        android:background="@drawable/buton_sel"
+        android:background="@drawable/buton_border"
         android:text="@string/text_scan_ble"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
