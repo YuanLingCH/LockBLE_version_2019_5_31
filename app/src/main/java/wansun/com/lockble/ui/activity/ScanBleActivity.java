@@ -167,6 +167,11 @@ public class ScanBleActivity extends BaseActivity implements AdapterView.OnItemC
         });
     }
 
+
+
+
+
+
     /*
     校验蓝牙权限
    */
